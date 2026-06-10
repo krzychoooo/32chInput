@@ -17,7 +17,7 @@
   },
   "version": "1.0.0",
   "license": "MIT",
-  "frameworks": "*",
+  "frameworks": "Arduino",
   "platforms": "*",
   "headers": "Input_32chanel.h",
   "dependencies":
