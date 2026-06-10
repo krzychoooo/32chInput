@@ -22,5 +22,31 @@ void Input_32chanel::updateAllInput(){
 
 
 void Input_32chanel::setInputRegister(uint8_t index, bool val){
-index = mixerIndex[index];
+    index = mixerIndex[index];
+    if (val){
+            this->input32bitRegister |= 1ul << index;
+        }
+        else{
+            this->input32bitRegister &= ~(1ul << index);
+    }
+}
+
+bool Input_32chanel::getChanelValue(uint8_t chanel){
+    return (bool)input32bitRegister & 1ul << chanel;
+}
+
+void ARDUINO_ISR_ATTR Input_32chanel:: tca6416INT() {
+  this->intFlag = true;
+  this->timeToRead = millis() + 50;
+}
+
+void Input_32chanel::loop(){
+    if (this->intFlag){
+        if (millis() > this->timeToRead){
+            this->updateAllInput();
+            this->intFlag = false;
+        }
+        
+    }
+    
 }
