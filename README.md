@@ -20,16 +20,20 @@ This module is based on two TCA6416A chips.
 ### Include Headers
 The library contains a dependency on the TCA6416 library.   
 
-        #include \<TCA6416\> 
+        #include <TCA6416> 
         #include "Input_32chanel.h"
 
 
 For each TCA6416 Create object.
 Then create an input module object.
 
-        TCA6416A chanel0x20Obj;
-        TCA6416A chanel0x21Obj;
-        Input_32chanel myInputArray(chanel0x20Obj, chanel0x21Obj);
+        TCA6416A chanel0x20Obj(0x20);
+        TCA6416A chanel0x21Obj(0x21);
+        Input_32chanel myInput(chanel0x20Obj, chanel0x21Obj);
+        
+        uint8_t IRQpin = 2;
+        
+        setup()
 
 
 

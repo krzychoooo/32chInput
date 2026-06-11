@@ -8,22 +8,24 @@ class Input_32chanel
 {
 private:
     TCA6416A chanel0x20, chanel0x21;
-    bool intFlag;
-    unsigned long timeToRead;
     void setInputRegister(uint8_t index, bool value);
-    void loop();
-
-//      PCB dependency chanel 3 TCA6416 is 19
-//                                    0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31
+    
+    //      PCB dependency chanel 3 TCA6416 is 19
+    //                                    0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31
     const uint8_t mixerIndex[32] = {  16, 17, 18, 19, 20, 21, 22, 23, 7,  6,  5,  4,  3,  2,  1,  0,  24, 25, 26, 27, 28, 29, 30, 31, 15, 14, 13, 12, 11, 10, 9,  8};
 public:
+    void (*show)(void);
+    void loop();
+    bool intFlag;
+    unsigned long timeToRead;
     Input_32chanel(TCA6416A, TCA6416A);
     ~Input_32chanel();
 
+    bool begin(void (*)());
     uint32_t input32bitRegister;
     void updateAllInput(void);
     bool getChanelValue(uint8_t chanel);
-    void ARDUINO_ISR_ATTR tca6416INT();
+    
 };
 
 

@@ -3,6 +3,7 @@
 Input_32chanel::Input_32chanel(TCA6416A chanel0x20, TCA6416A chanel0x21){
     this->chanel0x20 = chanel0x20;
     this->chanel0x21 = chanel0x21;
+    this->intFlag = false;
 }
 
 Input_32chanel::~Input_32chanel()
@@ -35,10 +36,6 @@ bool Input_32chanel::getChanelValue(uint8_t chanel){
     return (bool)input32bitRegister & 1ul << chanel;
 }
 
-void ARDUINO_ISR_ATTR Input_32chanel:: tca6416INT() {
-  this->intFlag = true;
-  this->timeToRead = millis() + 50;
-}
 
 void Input_32chanel::loop(){
     if (this->intFlag){
@@ -50,3 +47,11 @@ void Input_32chanel::loop(){
     }
     
 }
+
+void Input_32chanel::begin(){
+    chanel0x20.setPinMode16(0xFFFF);
+    chanel0x20.setPolarity16(0xFFFF);
+    chanel0x21.setPinMode16(0xFFFF);
+    chanel0x21.setPolarity16(0xFFFF);
+}
+
