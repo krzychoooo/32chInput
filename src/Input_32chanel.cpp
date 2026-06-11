@@ -33,7 +33,7 @@ void Input_32chanel::setInputRegister(uint8_t index, bool val){
 }
 
 bool Input_32chanel::getChanelValue(uint8_t chanel){
-    return (bool)input32bitRegister & 1ul << chanel;
+    return (bool)(input32bitRegister & (1ul << chanel));
 }
 
 
@@ -42,16 +42,33 @@ void Input_32chanel::loop(){
         if (millis() > this->timeToRead){
             this->updateAllInput();
             this->intFlag = false;
+            if (show){
+                show();
+            }
+            
         }
         
     }
     
 }
 
-void Input_32chanel::begin(){
+bool Input_32chanel::begin(void (*show)()){
+    bool ret=true;
+
+    this->show = show;
+
+    if (chanel0x20.begin() == false){
+        ret = false;
+    }
+
+    if (chanel0x21.begin() == false){
+        ret = false;
+    }
+
     chanel0x20.setPinMode16(0xFFFF);
     chanel0x20.setPolarity16(0xFFFF);
     chanel0x21.setPinMode16(0xFFFF);
     chanel0x21.setPolarity16(0xFFFF);
+    return ret;
 }
 
