@@ -24,17 +24,67 @@ The library contains a dependency on the TCA6416 library.
         #include "Input_32chanel.h"
 
 
-For each TCA6416 Create object.
-Then create an input module object.
+An example using interrupts.
 
+        #include <Arduino.h>
+        #include <Wire.h>
+        #include <TCA6416A.h>
+        #include "Input_32chanel.h"
+        
         TCA6416A chanel0x20Obj(0x20);
         TCA6416A chanel0x21Obj(0x21);
         Input_32chanel myInput(chanel0x20Obj, chanel0x21Obj);
         
         uint8_t IRQpin = 2;
         
-        setup()
+        void show(void);
+        
+        void ARDUINO_ISR_ATTR tca6416INT() {
+          myInput.intFlag = true;
+          myInput.timeToRead = millis() + 50;
+        }
+        
+        void setup()
+        {
+        	Serial.begin(115200);
+        
+          pinMode(IRQpin, INPUT_PULLUP);
+          attachInterrupt(digitalPinToInterrupt(IRQpin), tca6416INT, FALLING);
+        
+          if (myInput.begin(show) == false){
+            Serial.println("TCA6416 problem");
+            while (1);    
+          }
+        }
+        
+        void loop(){
+        myInput.loop();
+        }
+        
+        
+        void show(){
+           Serial.print("chanel \t"); 
+           for (size_t i = 0; i < 32; i++){
+             Serial.print(i); Serial.print("\t"); 
+            }
+            Serial.println("");
+            Serial.print("value  \t"); 
+          for (size_t i = 0; i < 32; i++){
+            bool val = myInput.getChanelValue(i);
+            Serial.print(val); Serial.print("\t"); 
+          }
+          Serial.println("\n");
+        }
 
+You can register your own function in the begin function.   
+Your function will be called whenever the input state changes.
+
+        myInput.begin(pointer_to_the_own_function)
+
+## Hardware
+The bus I2C can be connected via connectors J101 or J102;
+![I2C pinnOut](img/I2C_pinOut.png)
+![i2c pinout](img/I2C_SCH.PNG)
 
 
 
