@@ -14,7 +14,7 @@ This module is based on two TCA6416A chips.
 * One TCA6416 module has address 20 and the other has address 21.
 
 ![32-channel I2C input module](img/32ch_input_100_2.png)
-
+<a href="https://tranzystorek.pl/" target="_blank">tranzystorek.pl</a>
 ## How use library
 
 ### Include Headers
