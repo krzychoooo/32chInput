@@ -7,8 +7,8 @@ This module is based on two TCA6416A chips.
 * Supply voltage: 24VDC.
 * Input voltage: 0V to 24V.
 * It has a common interrupt signal.
-* It has galvanic isolation for I2C signals.
-* It has galvanic isolation for the INT signal.
+* It has galvanic isolation for I2C signals by ISO1540.
+* It has galvanic isolation for the INT signal by optocoupler.
 * Each channel has galvanic isolation.
 * Each channel has LED indication.
 * One TCA6416 module has address 20 and the other has address 21.
@@ -82,9 +82,15 @@ Your function will be called whenever the input state changes.
         myInput.begin(pointer_to_the_own_function)
 
 ## Hardware
-The bus I2C can be connected via connectors J101 or J102;
-![I2C pinnOut](img/I2C_pinOut.png)
+The bus I2C can be connected via connectors J101 or J102;    
+
+![I2C pinnOut](img/I2C_pinOut.png)    
+
 ![i2c pinout](img/I2C_SCH.PNG)
+
+The board fits perfectly into the housing  DM108-0080-14-100Z(H)
+
+![ DM108-0080-14-100Z(H)](img/DM108-0080-14-100Z(H).png)
 
 
 
